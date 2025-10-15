@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Anula’s Photobooth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">Anula’s Photobooth</div>
+      <button class="btn btn-ghost" id="aboutBtn">About</button>
+    </header>
+
+    <main id="views">
+      <section class="view view-home is-active" data-view="home">
+        <div class="grid-bg"></div>
+        <div class="home-content">
+          <div class="home-left">
+            <h1 class="title">Anula’s Photobooth</h1>
+            <div class="home-actions">
+              <button class="btn" data-nav="camera">Use Camera</button>
+              <button class="btn" data-nav="upload">Upload Photos</button>
+            </div>
+          </div>
+          <div class="home-right">
+            <div class="booth">
+              <div class="booth-curtain"></div>
+              <div class="booth-seat"></div>
+            </div>
+            <div class="home-slider"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view view-upload" data-view="upload">
+        <div class="cream">
+          <h2 class="title">Upload Your Photos</h2>
+          <div class="upload-grid">
+            <label class="upload-slot" data-slot="0">
+              <input type="file" accept="image/*" hidden />
+              <span class="slot-label">1</span>
+              <img alt="" />
+            </label>
+            <label class="upload-slot" data-slot="1">
+              <input type="file" accept="image/*" hidden />
+              <span class="slot-label">2</span>
+              <img alt="" />
+            </label>
+            <label class="upload-slot" data-slot="2">
+              <input type="file" accept="image/*" hidden />
+              <span class="slot-label">3</span>
+              <img alt="" />
+            </label>
+          </div>
+          <div class="actions">
+            <button class="btn" data-next="note">Continue</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="view view-camera" data-view="camera">
+        <div class="cream">
+          <h2 class="title">Take Photos</h2>
+          <div class="camera-wrap">
+            <video id="cameraVideo" playsinline autoplay muted></video>
+            <canvas id="cameraCanvas"></canvas>
+          </div>
+          <div class="camera-actions">
+            <button class="btn" id="snapBtn">Capture</button>
+            <button class="btn btn-ghost" id="retakeBtn">Retake</button>
+          </div>
+          <div class="thumbs" id="cameraThumbs"></div>
+          <div class="actions">
+            <button class="btn" data-next="note">Continue</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="view view-note" data-view="note">
+        <div class="cream">
+          <h2 class="title">Add a Note to your photos</h2>
+          <div class="note-wrap">
+            <textarea id="noteInput" placeholder="Write your note here..."></textarea>
+          </div>
+          <div class="actions">
+            <button class="btn" data-next="frames">Continue</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="view view-frames" data-view="frames">
+        <div class="grid-bg maroon"></div>
+        <h2 class="title on-maroon">Choose a Frame</h2>
+        <div class="frames-row" id="framesRow"></div>
+        <div class="actions">
+          <button class="btn cream-btn" data-next="customize">Continue</button>
+        </div>
+      </section>
+
+      <section class="view view-customize" data-view="customize">
+        <div class="cream">
+          <div class="customize-layout">
+            <div class="customize-left">
+              <div class="strip-preview" id="stripPreview"></div>
+            </div>
+            <div class="customize-right">
+              <h2 class="title small">Customize your photostrip</h2>
+              <div class="group">
+                <div class="label">Photostrip colour</div>
+                <div class="swatches" id="colorSwatches"></div>
+              </div>
+              <div class="group">
+                <div class="label">Stickers</div>
+                <div class="stickers" id="stickers">
+                  <button class="sticker" data-sticker="heart">❤</button>
+                  <button class="sticker" data-sticker="star">★</button>
+                  <button class="sticker" data-sticker="sparkle">✦</button>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn" id="downloadBtn">Download strip</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="aboutDialog">
+      <h3>About</h3>
+      <p>This photobooth lets you upload or capture three photos, add a note, choose a frame, and customize the photostrip.</p>
+      <form method="dialog"><button class="btn">Close</button></form>
+    </dialog>
+
+    <script src="app.js"></script>
+  </body>
+</html>
