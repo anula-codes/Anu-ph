@@ -8,6 +8,70 @@ const state = {
 const qs = s => document.querySelector(s);
 const qsa = s => Array.from(document.querySelectorAll(s));
 function show(view){ qsa(".view").forEach(v=>v.classList.remove("is-active")); qs(`.view[data-view="${view}"]`).classList.add("is-active"); window.scrollTo(0,0); }
+const useCameraBtn = document.getElementById('useCameraBtn');
+const preview = document.getElementById('preview'); // Change if your preview element has a different ID
+
+useCameraBtn.onclick = async function () {
+  // Request camera access
+  const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+  const video = document.createElement('video');
+  video.srcObject = stream;
+  video.play();
+
+  // Insert video into preview (optional, for user feedback)
+  preview.innerHTML = '';
+  preview.appendChild(video);
+
+  // Wait for video to be ready
+  await new Promise(resolve => video.onloadedmetadata = resolve);
+
+  // Countdown and Capture 3 photos
+  state.photos = [];
+  for (let i = 1; i <= 3; i++) {
+    await showCountdown(preview, 4 - i);   // Countdown: 3, 2, 1
+    // Capture photo
+    const photo = takePhotoFromVideo(video);
+    state.photos.push(photo);
+  }
+
+  // Stop camera after photos taken
+  stream.getTracks().forEach(track => track.stop());
+  video.remove();
+
+  // Optionally, render thumbnails or update your photo strip
+  renderThumbs();
+}
+
+// Helper for countdown animation
+function showCountdown(parent, num) {
+  return new Promise(resolve => {
+    const c = document.createElement('div');
+    c.textContent = num;
+    c.style.cssText = `
+      position: absolute;
+      left: 50%; top: 30%;
+      transform: translate(-50%, -50%);
+      font-size: 5rem; color: #fff; background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 2rem; z-index:1000;
+      pointer-events:none;
+    `;
+    parent.appendChild(c);
+
+    setTimeout(() => {
+      c.remove();
+      setTimeout(resolve, 300); // Short pause after number disappears
+    }, 800);
+  });
+}
+
+// Helper: Capture a photo from video element
+function takePhotoFromVideo(video) {
+  const canvas = document.createElement('canvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+  return canvas.toDataURL('image/png');
+}
+
 qs("#aboutBtn").addEventListener("click",()=>qs("#aboutDialog").showModal());
 qsa("[data-nav]").forEach(b=>b.addEventListener("click",()=>{const dest=b.getAttribute("data-nav"); if(dest==="camera") initCamera(); show(dest);} ));
 qsa("[data-next]").forEach(b=>b.addEventListener("click",()=>{const dest=b.getAttribute("data-next"); if(dest==="frames") buildFrames(); if(dest==="customize") buildCustomize(); show(dest);} ));
@@ -130,5 +194,6 @@ async function downloadStrip(previewEl){
 }
 function loadImage(src){ return new Promise(res=>{ const img=new Image(); img.crossOrigin="anonymous"; img.onload=()=>res(img); img.src=src||"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100'><rect width='100%' height='100%' fill='%23ddd'/></svg>"; }); }
 function drawContain(ctx,img,x,y,w,h){ const r=Math.min(w/img.width,h/img.height); const dw=img.width*r, dh=img.height*r; const dx=x+(w-dw)/2, dy=y+(h-dh)/2; ctx.fillStyle="#000"; ctx.fillRect(x,y,w,h); ctx.drawImage(img,dx,dy,dw,dh); }
+
 
 renderThumbs();
