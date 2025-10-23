@@ -22,7 +22,7 @@ body{margin:0;font-family:"Gochi Hand",system-ui,sans-serif;background:var(--cre
 
 /* home */
 .home-content{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:40px 64px;align-items:center}
-.title{font-size:48px;color:#9b1836;margin:10px 0 24px}
+.title{font-size:48px;color:#ffffff;margin:10px 0 24px}
 .title.small{font-size:34px}
 .title.on-maroon{color:var(--cream);text-align:center;padding-top:40px}
 .home-actions{display:flex;gap:24px}
@@ -75,4 +75,5 @@ body{margin:0;font-family:"Gochi Hand",system-ui,sans-serif;background:var(--cre
 .swatch.is-active{outline:3px solid var(--rose)}
 .stickers{display:flex;gap:10px}
 .sticker{font-size:24px;border:2px dashed var(--rose);background:transparent;border-radius:10px;padding:6px 10px;cursor:pointer}
+
 .sticker-drop{position:absolute;font-size:28px;cursor:move}
